@@ -32,20 +32,29 @@
 	width:30%;
 }
 
+.myShadow{
+  box-shadow: 10px 10px 5px grey;}
+
 </style>
 
 </head>
 <body>
 <center>
 <div id="">
-    <h2> Custom store locator</h2>
+   
+    <h2 class="myShadow"> 
+	  <img style="height:29px;" src="images/store-locator.png"/>
+	  Custom store locator
+	  <img style="height:29px;" src="images/store-locator.png"/><br>
+	 </h2>
 </div>
+<br>
 
 <!-- this div will hold your map -->
-<div id="map"></div>
+<div id="map" class="myShadow"></div>
 
 <!-- this div will hold your store info -->
-<div id="info_div"></div>
+<div id="info_div" class="myShadow"></div>
 
 <!-- my pop up -->
 <div id="myTil"></div>
@@ -75,12 +84,12 @@ function initMap() {
 	//donor
 	
 	//donor
-	
+	//var marker;
 	
 	function markStore(storeInfo){
 
 		// Create a marker and set its position.
-		/*var*/ marker = new google.maps.Marker({  //removed var to make global and seen in  showStoreInfo(storeInfo)
+		var marker = new google.maps.Marker({  //removed var to make global and seen in  showStoreInfo(storeInfo)
 			map: map,
 			position: storeInfo.location,
 			title: storeInfo.name
@@ -108,7 +117,11 @@ function initMap() {
 		
 		// show store info when marker is clicked
 		marker.addListener('click', function(){
-			showStoreInfo(storeInfo);
+			 
+			
+			showStoreInfo(storeInfo, marker); //Mega error was here, onClick was displayed the correct pin info, but location was always of the last Object {stores},
+			                                  //because  I removed /*var*/ marker in {markStore(storeInfo)} to make it global and visible in {showStoreInfo()}
+											  //the right solution is to pass {marker} as argument in showStoreInfo(storeInfo, marker)
 			//showCoords(event); //my gets coord clicked			
 		});
 	}
@@ -117,29 +130,26 @@ function initMap() {
 	
 	
 	// show store info in text box OnClick
-	function showStoreInfo(storeInfo){
-		/*
-		var info_div = document.getElementById('info_div');
-		info_div.innerHTML = 'Store name: '
-			+ storeInfo.name
-			+ '<br>Hours: ' + storeInfo.hours
-			+ '<br>Info: ' + storeInfo.description;
-			*/
+	function showStoreInfo(storeInfo, marker)
+	{
 			
 			resultedText = 'Store name: '
 			    + storeInfo.name
 			    + '<br>Hours: ' + storeInfo.hours
 			    + '<br>Info: ' + storeInfo.description;
+				
 			
 			//my animation
 			$("#info_div").stop().fadeOut("slow",function(){ $(this).html(resultedText)}).fadeIn(2000);
 			
 			
 			//My pop up onClick------
-			 var infowindow = new google.maps.InfoWindow({
+			infowindow = new google.maps.InfoWindow({
                  content: resultedText //"Hello World!"
               });
-             infowindow.open(map,marker);
+			 infowindow.close();
+             infowindow.open(map, marker);
+			
 			 // END My pop up onClick-------------
 			 
 			 
@@ -174,20 +184,38 @@ function initMap() {
 		},
 		
 		{
-			name: 'Магазин "Природа"',
+			name: 'Магазин Природа',
 			location: {lat: 50.258093, lng: 28.663449},  
 			hours: 'круглосуточно',
 			description: '',
 		},
-		
 		{
 			name: 'McDonald"s',
-			location: {lat: 50.265297, lng: 28.685040},  
-			hours: 'вулиця Київська, 77, Житомир, Житомирська область, 10000',
+			location: {lat: 50.265906, lng: 28.683787},  
+			hours: 'Київська 77, Житомир, 10000',
 			description: 'McDrive',
-		}
+		},
+			{
+			name: 'Замковая Гора',
+			location: {lat: 50.253627, lng: 28.655032},  
+			hours: 'Парк',
+			description: 'Кафедральна, 10002',
+		},
+		{
+			name: 'Парк Гагрина',
+			location: {lat: 50.247574, lng: 28.665838},  
+			hours: 'Атракционы',
+			description: 'Старий Бульвар 34',
+			
+		},
+		
 	];
-    // END  INFO DATA
+    // END  INFO DATA------------------------------
+	
+	
+	
+	
+	
 	
 	stores.forEach(function(store){
 		markStore(store);
