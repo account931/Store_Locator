@@ -64,10 +64,10 @@
 
 <script>
 window.x;
-      
+var infowindow; // add as closing prev onfowindow caused the error, was not visible in  showStoreInfo(storeInfo, marker)
 		
 		
-//core function to show GM, trigered in //script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async defer		
+//core function to show GMaps, trigered in //script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async defer		
 function initMap() {  
 	var myMapCenter = {lat:50.257943 , lng: 28.663423};  
 
@@ -122,7 +122,9 @@ function initMap() {
 			showStoreInfo(storeInfo, marker); //Mega error was here, onClick was displayed the correct pin info, but location was always of the last Object {stores},
 			                                  //because  I removed /*var*/ marker in {markStore(storeInfo)} to make it global and visible in {showStoreInfo()}
 											  //the right solution is to pass {marker} as argument in showStoreInfo(storeInfo, marker)
-			//showCoords(event); //my gets coord clicked			
+			//showCoords(event); //my gets coord clicked	
+            
+		
 		});
 	}
 
@@ -142,13 +144,18 @@ function initMap() {
 			//my animation
 			$("#info_div").stop().fadeOut("slow",function(){ $(this).html(resultedText)}).fadeIn(2000);
 			
+			//closes prev infowindow if any
+			if (infowindow) {
+                infowindow.close();
+			}
+			
 			
 			//My pop up onClick------
 			infowindow = new google.maps.InfoWindow({
                  content: resultedText //"Hello World!"
               });
-			 infowindow.close();
-             infowindow.open(map, marker);
+			
+            infowindow.open(map, marker);
 			
 			 // END My pop up onClick-------------
 			 
