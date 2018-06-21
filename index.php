@@ -49,6 +49,10 @@
 	 </h2>
 </div>
 <br>
+ 
+<div id="controls">
+   <input id="btn_Control" type="button" name="Button2" value="Hide markers">
+</div><br>
 
 <!-- this div will hold your map -->
 <div id="map" class="myShadow"></div>
@@ -65,7 +69,7 @@
 <script>
 window.x;
 var infowindow; // add as closing prev onfowindow caused the error, was not visible in  showStoreInfo(storeInfo, marker)
-		
+var markers = [];		
 		
 //core function to show GMaps, trigered in //script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async defer		
 function initMap() {  
@@ -89,12 +93,12 @@ function initMap() {
 	function markStore(storeInfo){
 
 		// Create a marker and set its position.
-		var marker = new google.maps.Marker({  //removed var to make global and seen in  showStoreInfo(storeInfo)
+		var marker = new google.maps.Marker({  //!!!==DO not remove Var, it cause pop-up wrong appear
 			map: map,
 			position: storeInfo.location,
 			title: storeInfo.name
 		});
-
+        markers.push(marker); // add marker to the array with all markers
 		
 		
 		// ERASE, not used
@@ -222,11 +226,34 @@ function initMap() {
 	
 	
 	
-	
-	
+	// runs every Stores Object through function markStore
 	stores.forEach(function(store){
 		markStore(store);
 	});
+	
+	
+	
+	// Hide/ show markers
+
+    $(document).ready(function(){
+        $("#btn_Control").click(function(){
+			if ($("#btn_Control").prop("value")=="Hide markers"){
+				$("#btn_Control").stop().fadeOut("fast",function(){ $(this).attr('value', 'Show markers')}).fadeIn(2000);
+				//$("#btn_Control").attr('value', 'Show markers');
+				for (var i = 0; i < markers.length; i++) {
+                    markers[i].setMap(null);
+                 }
+				//marker.setVisible(false);
+			} else {
+				$("#btn_Control").stop().fadeOut("fast",function(){ $(this).attr('value', 'Hide markers')}).fadeIn(2000);
+				for (var i = 0; i < markers.length; i++) {
+                    markers[i].setMap(map);
+                 }
+			}
+            
+       });
+   });
+	//   END ready 
 
 }
 </script>
