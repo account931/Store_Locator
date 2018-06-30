@@ -36,7 +36,22 @@
    .myShadow{
        box-shadow: 10px 10px 5px grey;
    }
-
+   
+   /* -- START CLASS no-gutter that fixes spaces between cols--*/
+   .row.no-gutter {
+      margin-left: 0;
+      margin-right: 0;
+    }
+    .row.no-gutter [class*='col-']:not(:first-child),
+    .row.no-gutter [class*='col-']:not(:last-child) {
+       padding-right: 0;
+       padding-left: 0;
+    }
+    .row > div {
+        background: lightgrey;
+        border: 1px solid;
+    }
+   /* --END  CLASS no-gutter that fixes spaces between cols--*/
     </style>
 
   </head>
@@ -52,13 +67,33 @@
     </div>
     <br>
  
+  
+    <div class="wrapper grey">
+      <div class="container">
+ 
     <!-- Controls: show/hide markers, from/to dropdowns--> 
-    <div id="controls">
-     <input id="btn_Control" type="button" name="Button2" value="Hide markers">
-     <span id="destination"></span>
-     <span id="destination2"></span>
-     <input id="btn_CalcRoute" type="button" name="Button" value="Calc the route">
-     <input id="btn_CalcRoute_Clear" type="button" name="Button" value="Clear">
+    <div id="controls" class="row no-gutter"> <!-- CLASS no-gutter that fixes spaces between cols-->
+	
+	    <div class="col-md-2 col-xs-12  style="">
+            <input id="btn_Control" type="button" name="Button2" value="Hide markers" class="btn" />
+	    </div>
+	    
+		<div class="col-md-3 col-xs-6 ">
+            <span id="destination" ></span>
+		</div>
+		
+		<div class="col-md-3 col-xs-6">	
+            <span id="destination2" ></span>
+		</div>
+		
+		<div class="col-md-2 col-xs-6">
+            <input id="btn_CalcRoute" type="button" name="Button" value="Calc the route" class="btn" >
+		</div>
+		
+		<div class="col-md-1 col-xs-6">
+            <input id="btn_CalcRoute_Clear" type="button" name="Button" value="Clear" class="btn" >
+		</div>
+		
     </div>
 	<br>
 
@@ -80,6 +115,11 @@
 
   </center>
 
+  </div> <!--END class="wrapper grey">-->
+  </div> <!--END class="container">-->
+  
+  
+  
   <!-- CORE SCRIPT, runs the Google maps Load-->
   <script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async defer></script>
   <!--<script src="https://maps.googleapis.com/maps/api/js?key=PASTE_YOUR_KEY_HERE&callback=initMap" async defer></script>-->
