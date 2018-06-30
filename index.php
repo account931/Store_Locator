@@ -37,6 +37,11 @@
        box-shadow: 10px 10px 5px grey;
    }
    
+    .dest2 {
+     overflow:hidden;
+	 word-wrap: break-word;
+   }
+   
    /* -- START CLASS no-gutter that fixes spaces between cols--*/
    .row.no-gutter {
       margin-left: 0;
@@ -82,7 +87,7 @@
             <span id="destination" ></span>
 		</div>
 		
-		<div class="col-md-3 col-xs-6">	
+		<div class="col-md-3 col-xs-6 dest2">	
             <span id="destination2" ></span>
 		</div>
 		
