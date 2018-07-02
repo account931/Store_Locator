@@ -3,6 +3,84 @@
 window.x;
 var infowindow; // add as closing prev onfowindow caused the error, was not visible in  showStoreInfo(storeInfo, marker)
 var markers = [];		
+
+
+
+
+
+
+
+// Start getting object {stores} from SQL, this SQL functioanlity is temp disabled, but 100% working, it u'd like to use this SQL Markers version, please decomment this block + deploy SQL table to server(schema is in Classes....) + comment built-in JS object {stores}
+// sends ajax to php which SELECT all markers from Markers DB and echo them in JSON
+	    var stores = [];  // object that will be used instead of commented build-in object
+		
+		
+		// AJAX sends data to PHP handler, which selects markers from SQL DB  ************ 
+        $.ajax({
+            url: 'ajax_php/getSqlMarkers.php',
+            type: 'POST',
+			dataType: 'JSON', // without this it returned string(that can be alerted), now it returns object
+			//passing the data
+            data: { 
+			    //cityLat:lat,	
+			},
+			async: false,
+            success: function(data) {
+                // do something;
+				alert(data[0].name);
+				alert(data.length);
+				
+				for (var i = 0; i < data.length; i++){
+					// var element and var locationZ should be declared inside for(), otherwise it will return the same last value
+					var element = {}; // an object that will contain {name: storeName, locationZ:{lat:44xx, lng: 55xx}}
+		            var locationZ = {}; // stores
+					locationZ.lat = parseFloat(data[i].lat); //adds to object {locationZ} key {lat} with value {data[i].lat}, which is from SQL Json answer. Must use {parseFloat()} or the map crashes, it does not accept lat, lon ad numbers
+		            locationZ.lng = parseFloat(data[i].lng);
+		
+		
+		            element.name = data[i].name;
+		            element.location = locationZ;
+		            stores.push(element);
+					
+				}
+				
+				alert ("Loc St exists" + JSON.stringify(stores, null, 4) );
+				
+                
+            },  //end success
+			error: function (error) {
+				alert('ajax failed, be sure php script contains ONLY Json, no echoes, like "Connected successfully to  DataBase _zzz"');
+            }	
+        });
+	  
+                                               
+       //  END AJAX sends data to PHP handler, which selects markers from SQL DB  ************ *
+
+// END  getting object {stores} from SQL,
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		
 		
 		
@@ -21,6 +99,14 @@ var markers = [];
 	});
 
 
+	
+	
+	
+	
+	
+	
+
+	
 	
 	
 
@@ -146,7 +232,7 @@ var markers = [];
 	
 	
 	// INFO DATA
-	var stores = [
+	var stores_PREV = [
 		{
 			name: 'ул. Бандеры',
 			location: {lat: 50.2627051, lng: 28.661707}, 
@@ -227,6 +313,14 @@ var markers = [];
 	
 
     $(document).ready(function(){
+		
+	
+	
+	
+	
+	
+	
+		
 		
 	   // Hide/show markers
 	   // **************************************************************************************
