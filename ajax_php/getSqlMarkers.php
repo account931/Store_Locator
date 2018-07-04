@@ -4,77 +4,8 @@
 	 //connects to SQL DB
      /* $singeltone= */ ConnectDB::getInstance();
 	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 
-	 //echo "<br>";
-	 
-	 // sql to create table
-	 /*
-$sql = "CREATE TABLE `markers` (
-  `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-  `name` VARCHAR( 60 ) NOT NULL ,
-  `address` VARCHAR( 80 ) NOT NULL ,
-  `lat` FLOAT( 10, 6 ) NOT NULL ,
-  `lng` FLOAT( 10, 6 ) NOT NULL
-) ENGINE = MYISAM" ;
-
-
-try{
-if ($conn->query($sql) === TRUE) {
-    echo "Table MyGuests created successfully";
-} else {
-    echo "Error creating table: " . $conn->error;
-}
- }
-catch(PDOException $e)
-    {
-    echo "Error: " . $e->getMessage();
-    } 
-	*/
-	
-	
-	//echo "<br>";
-	
-	
-//INSERT records
-/*
-try {
-   
-    // prepare sql and bind parameters
-    $stmt = $conn->prepare("INSERT INTO markers (name, lat, lng) 
-    VALUES (:firstname, :lat, :lon)");
-    $stmt->bindParam(':firstname', $firstname);
-    $stmt->bindParam(':lat', $latt);
-    $stmt->bindParam(':lon', $lonn);
-
-    // insert a row
-    $firstname = "my";
-    $latt = 50.2627051;
-    $lonn = 28.661707;
-    $stmt->execute();
-
-    // insert another row
-	
-    
-
-    echo "New records created successfully";
-    }
-catch(PDOException $e)
-    {
-    echo "Error: " . $e->getMessage();
-    } 
-*/
-// END INSERT records	
-	
-	
-	//echo "<br>";
-	
+	 //CreateTableAndRecords::createTable();  //create a SQL table with PHP (can be used if u need to create a table for the fist time) and don't want to export/import
+	 //CreateTableAndRecords::insertSampleRecords('my 22', 50.2727051, 28.661707, 'from 10 pm', 'nice'); // insert a sample record to SQL DB markers
 	
 	
 	

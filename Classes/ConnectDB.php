@@ -3,10 +3,10 @@
  {
 	 
 	 
-  //singletone
-  // **************************************************************************************
-  // **************************************************************************************
-  //                                                                                     **  
+    //singletone constructor
+    // **************************************************************************************
+    // **************************************************************************************
+    //                                                                                     **  
     protected static $_instance;  // class instance
   
     public static function getInstance()// get  a class instance
@@ -28,21 +28,24 @@
  
     //prohibit  object cloning by  "private "       
     private function __wakeup() {}
-  // **                                                                                  **
-  // **************************************************************************************
-  // **************************************************************************************
-  //end  singletone
+    // **                                                                                  **
+    // **************************************************************************************
+    // **************************************************************************************
+    //end  singletone constructor
 
 
 
-
+  
+  
+  
+    // connection, called in constructor, singletone
     // **************************************************************************************
     // **************************************************************************************
     //                                                                                     **  
     public function connectDB()
     { 
    
-        global $conn;
+        global $conn; //must be specified that we use global $conn () otherwise not seen
         $servername = "127.0.0.1";
         $username = "root";
         $password = ""; //for local storage password must be void, otherwise causes Error "sqlstatehy000-1045-access-denied-for-user-usernamelocalhost"
@@ -51,7 +54,7 @@
             $conn = new PDO("mysql:host=$servername;dbname=store_locator", $username, $password);
             // set the PDO error mode to exception
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            //echo "</br>Connected successfully to  DataBase _zzz"; 
+            //echo "</br>Connected successfully to  DataBase _zzz";   //turn off not to screw JSon and cause no Error
             $_POST['connection_flag']='connection_flag_OK';
 			return true;
         } catch(PDOException $e) {
@@ -66,7 +69,10 @@
 	
 	
 	
-//sample -NOT USED NOW
+	
+	
+	
+//sample -NOT USED NOW!!!!!!!!!!!!!!!!!!!!!!!!
 // **************************************************************************************
 // **************************************************************************************
 //                                                                                     **  
