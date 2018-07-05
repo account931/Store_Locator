@@ -1,0 +1,51 @@
+    /* map needs width and height to appear */
+    #map{
+	    width: 900px;
+	    max-width: 100%;
+	    height: 500px;
+    }
+
+    #info_div{
+	   margin-top:14px;
+	   background:grey;
+	   padding:20px;
+	   width:50%;
+	   border-radius:20px;
+    }
+	#info_div p{
+		color:white;
+	}
+
+    #myTil{
+	   position:absolute;
+	   background:red;
+	   width:30%;
+    }
+
+   .myShadow{
+       box-shadow: 10px 10px 5px grey;
+   }
+   
+    .dest2 {
+     overflow:hidden;
+	 word-wrap: break-word;
+   }
+   
+   .red {color: red;
+   }
+   
+   /* -- START CLASS no-gutter that fixes spaces between cols--*/
+   .row.no-gutter {
+      margin-left: 0;
+      margin-right: 0;
+    }
+    .row.no-gutter [class*='col-']:not(:first-child),
+    .row.no-gutter [class*='col-']:not(:last-child) {
+       padding-right: 0;
+       padding-left: 0;
+    }
+    .row > div {
+        background: lightgrey;
+        border: 1px solid;
+    }
+   /* --END  CLASS no-gutter that fixes spaces between cols--*/

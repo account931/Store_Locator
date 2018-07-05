@@ -9,55 +9,7 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
       <script src="js/storeLocator_core.js"></script><!--  Core Sore locator JS-->
-
-     <style type="text/css">
-
-    /* map needs width and height to appear */
-    #map{
-	    width: 900px;
-	    max-width: 100%;
-	    height: 500px;
-    }
-
-    #info_div{
-	   margin-top:14px;
-	   background:grey;
-	   padding:20px;
-	   width:50%;
-	   border-radius:20px;
-    }
-
-    #myTil{
-	   position:absolute;
-	   background:red;
-	   width:30%;
-    }
-
-   .myShadow{
-       box-shadow: 10px 10px 5px grey;
-   }
-   
-    .dest2 {
-     overflow:hidden;
-	 word-wrap: break-word;
-   }
-   
-   /* -- START CLASS no-gutter that fixes spaces between cols--*/
-   .row.no-gutter {
-      margin-left: 0;
-      margin-right: 0;
-    }
-    .row.no-gutter [class*='col-']:not(:first-child),
-    .row.no-gutter [class*='col-']:not(:last-child) {
-       padding-right: 0;
-       padding-left: 0;
-    }
-    .row > div {
-        background: lightgrey;
-        border: 1px solid;
-    }
-   /* --END  CLASS no-gutter that fixes spaces between cols--*/
-    </style>
+      <link rel="stylesheet" type="text/css" media="all" href="css/myStoreLocator.css">
 
   </head>
   <body>
@@ -96,9 +48,9 @@
 		</div>
 		
 		<div class="col-md-1 col-xs-6">
-            <input id="btn_CalcRoute_Clear" type="button" name="Button" value="Clear" class="btn" >
+            
 		</div>
-		
+		<input id="btn_CalcRoute_Clear" type="button" name="Button" value="Clear" class="btn" >
     </div>
 	<br>
 
@@ -124,6 +76,49 @@
   </div> <!--END class="container">-->
   
   
+  
+  
+  
+  
+  
+  
+  
+  
+  <!-- Modal -->
+  <!--we add {data-toggle='modal' data-target='#myModal'} to button (in JS) which triggers  to open modal with Bootstrap, no additional JS is needed-->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Add a new marker</h4>
+      </div>
+      <div class="modal-body">
+        <p>Provide info for marker <span id="newMarkerCoords"></span></p>
+		
+		<label for="usr">Marker Name:</label>
+        <input type="text" class="form-control" id="">
+		<label for="usr">Marker Info:</label>
+        <input type="text" class="form-control" id="">
+		<label for="usr">Marker Description:</label>
+        <input type="text" class="form-control" id="">
+		
+  
+      </div>
+      <div class="modal-footer">
+	    <button type="button" class="btn btn-default" data-dismiss="modal">Add</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+ <!-- END Modal -->
+ 
+ 
+ 
   
   <!-- CORE SCRIPT, runs the Google maps Load-->
   <script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async defer></script>
