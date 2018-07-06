@@ -49,3 +49,19 @@
         border: 1px solid;
     }
    /* --END  CLASS no-gutter that fixes spaces between cols--*/
+   
+   
+   /* this is the fix to prevent page moving left when div_info appears and scrolls bar appears on the right forcing the page to move left. This adds permant scroll presence */
+   html {
+    overflow-y: scroll;
+} 
+   
+   
+    /* -----------------------Start Modal----------------------------*/
+	 /* -----------------------END  Modal----------------------------*/
+   
+   
+   
+   
+   
+   
