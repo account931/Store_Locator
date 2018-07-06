@@ -128,9 +128,9 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 	  //showSmallModalWindow(); // shows small modal pop-up with suggestion to add clicked position to SQL markers
 	  
 	   //Scroll to #info_div in Mobile only
-		if(screen.width <= 640){ 
+		//if(screen.width <= 640){ 
 	        scrollResults("#info_div"); //scroll the page down to weather results
-		}
+		//}
 	  
       setTimeout(placeMarker, 400); //adds a new marker to page
    });
@@ -322,7 +322,7 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 		},
 			{
 			name: 'Замковая Гора',
-			location: {lat: 50.253627, lng: 28.655032},  
+			location: {lat: 50.253627, lng: 50.253627},  
 			hours: 'Парк',
 			description: 'Кафедральна, 10002',
 		},
