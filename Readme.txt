@@ -1,3 +1,5 @@
+//UPGATE(7.7.2018): THIS STORE LOCATOR IS NOW 100% SWITCHED TO SQ DB AND USES NO BUILT_IN JS OBJECT!!!!!(as we implemented adding a new marker and this requirs SQL DB)
+
 Store Locator
 # Google maps are displayed with { <script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async defer></script> } in index.html.
 # Data for markers is stored in array of JS objects {var stores}. We create relevant amount of markers with {function markStore(storeInfo)} and add them to array {markers} to be able to hide/show.

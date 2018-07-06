@@ -8,7 +8,8 @@
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-      <script src="js/storeLocator_core.js"></script><!--  Core Sore locator JS-->
+      <script src="js/storeLocator_core.js"></script><!--  Core Sore locator JS-->  
+	  <script src="js/modalWindows_action.js"></script><!--  runs interaction with modal windows--> 
       <link rel="stylesheet" type="text/css" media="all" href="css/myStoreLocator.css">
 
   </head>
@@ -48,9 +49,9 @@
 		</div>
 		
 		<div class="col-md-1 col-xs-6">
-            
+		    <input id="btn_CalcRoute_Clear" type="button" name="Button" value="Clear" class="btn" >
 		</div>
-		<input id="btn_CalcRoute_Clear" type="button" name="Button" value="Clear" class="btn" >
+		
     </div>
 	<br>
 
@@ -84,7 +85,7 @@
   
   
   
-  <!-- Modal -->
+  <!-- START Modal with fields to add a new marker(hidden by default) -->
   <!--we add {data-toggle='modal' data-target='#myModal'} to button (in JS) which triggers  to open modal with Bootstrap, no additional JS is needed-->
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -99,23 +100,42 @@
         <p>Provide info for marker <span id="newMarkerCoords"></span></p>
 		
 		<label for="usr">Marker Name:</label>
-        <input type="text" class="form-control" id="">
+        <input type="text" class="form-control" id="formMarkerName">
 		<label for="usr">Marker Info:</label>
-        <input type="text" class="form-control" id="">
+        <input type="text" class="form-control" id="formMarkerInfo">
 		<label for="usr">Marker Description:</label>
-        <input type="text" class="form-control" id="">
+        <input type="text" class="form-control" id="formMarkerDescription">
 		
   
       </div>
       <div class="modal-footer">
-	    <button type="button" class="btn btn-default" data-dismiss="modal">Add</button>
+	    <button type="button" class="btn btn-default" data-dismiss="modal" id="agreedAddToSQL">Add</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
 
   </div>
 </div>
- <!-- END Modal -->
+ <!-- END Modal with fields to add a new marker -->
+ 
+ 
+ 
+ 
+ 
+ 
+  <!-- START Smqll Modal with suggestion to add to add a new marker -->
+  <!--we add {data-toggle='modal' data-target='#myModal'} to button (in JS) which triggers  to open modal with Bootstrap, no additional JS is needed-->
+
+ <!-- END Modal with fields to add a new marker -->
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
  
  
  

@@ -3,7 +3,7 @@
  {
 	 
 	 
-  
+  // selects all markers stored in SQL DB markers and JSON echo it
   // **************************************************************************************
   // **************************************************************************************
   //                                                                                     **  
@@ -13,7 +13,7 @@
 	global $conn;
 	try {
     
-        $stmt = $conn->prepare("SELECT name, lat, lng FROM markers"); 
+        $stmt = $conn->prepare("SELECT id, name, lat, lng, hours, description FROM markers"); 
         $stmt->execute();
 
         // set the resulting array to associative

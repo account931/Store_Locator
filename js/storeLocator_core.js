@@ -3,7 +3,7 @@
 window.x;
 var infowindow; // add as closing prev onfowindow caused the error, was not visible in  showStoreInfo(storeInfo, marker)
 var markers = [];		
-
+var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php/insertSqlMarker_Handler.php'} to add to SQL
 
 
 
@@ -47,6 +47,7 @@ var markers = [];
 		            element.location = locationZ;
 					element.hours = data[i].hours;
 					element.description = data[i].description;
+					element.id = data[i].id;
 		            stores.push(element);
 					
 				}
@@ -66,7 +67,7 @@ var markers = [];
        // **************************************************************************************
        // END  getting object {stores} from SQL,
 
-       //runSQLRequestToGetMarkers(); //Run SQL request to get markers // disable it if using built-in JS object
+       runSQLRequestToGetMarkers(); //Run SQL request to get markers // disable it if using built-in JS object
 
 
 
@@ -110,23 +111,32 @@ var markers = [];
 
 	
 	
-   // Click on any place at Google maps to get clicked coords and put a marker there!!!!!!!!!!!!!!!!!!!!!
+   // Click on any place at Google maps to get current coords of clicked place  and put a marker there!!!!!!!!!!!!!!!!!!!!!
    //-------------------------------------------------------------------------------------------
    google.maps.event.addListener(map, 'click', function(event) {
       mapZoom = map.getZoom();
-      startLocation = event.latLng; //gets clicked coords
-	  
+      startLocation = event.latLng; //gets current clicked coords
+      globalCoords = startLocation.toString().replace("(", "").replace(")", "");//gets current clicked coords to global var, which we will pass to {'ajax_php/insertSqlMarker_Handler.php'} to add to SQL. Should use {.toString} otherwise it crashes
+	  //alert(globalCoords);
 	  // show coors in div + button to open modal
 	  // we add {data-toggle='modal' data-target='#myModal'} tp button to open modal with Bootstrap, no additional JS is needed
 	  var text = "<p class='red;'>" + startLocation + "</p><p>Add this point to your markers?</p><input id='btn_add_toMarkres' type='button' name='Button' value='yes' class='btn btn-info' data-toggle='modal' data-target='#myModal'>  <input id='btn_add_cancel' type='button' name='Button' value='No' class='btn btn-danger' >"; 
 	  $("#info_div").stop().fadeOut("slow",function(){ $(this).html(text)}).fadeIn(2000);
-	  $("#newMarkerCoords").html( startLocation); // html coords to modal window;
+	  $("#newMarkerCoords").html( '-> '+ startLocation); // html current coords to modal window with fields()to add a new marker to SQL;
+	  //alert(startLocation ); //alert current clicke coords
 	  
-	  //alert(startLocation );
+	  //showSmallModalWindow(); // shows small modal pop-up with suggestion to add clicked position to SQL markers
+	  
+	   //Scroll to #info_div in Mobile only
+		if(screen.width <= 640){ 
+	        scrollResults("#info_div"); //scroll the page down to weather results
+		}
 	  
       setTimeout(placeMarker, 400); //adds a new marker to page
    });
 
+   
+   //----------
     var previousMarker; //must be global to be able to remove a prev clicked marker
   
     function placeMarker() {
@@ -139,7 +149,13 @@ var markers = [];
             previousMarker = new google.maps.Marker({position: startLocation, map: map, title: 'bbb'});		
          }
      }
-	// End  Click on G maps that gets clicked coords
+	 
+	 
+	 //---------
+	 function showSmallModalWindow() {
+		 
+	 }
+	// End Click on any place at Google maps to get clicked coords and put a marker there!!!!!!!!!!!!!!!!!!!!!
     //-------------------------------------------------------------------------------------------
 	
 	
@@ -275,8 +291,10 @@ var markers = [];
 	
 	
 	
-	// INFO DATA
-	var stores = [
+	// INFO DATA, 
+	//this object was renamed to {storesPREV} as now it is not used. Now var stores[] is derived from SQL with JS {runSQLRequestToGetMarkers()}.
+	/*
+	var storesPREV = [
 		{
 			name: 'ул. Бандеры',
 			location: {lat: 50.2627051, lng: 28.661707}, 
@@ -331,6 +349,7 @@ var markers = [];
 		},
 		
 	];
+	*/
     // END  INFO DATA-------
 	// **                                                                                  **
     // **************************************************************************************
@@ -359,16 +378,7 @@ var markers = [];
 
 	
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
     $(document).ready(function(){
 		
 	
@@ -514,7 +524,126 @@ var markers = [];
        // **************************************************************************************
        // **************************************************************************************
 	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   	
+	  
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
    });
 	//   END ready 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 
 } // END  function initMap
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+	
+	
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// Scroll the page to results  #resultFinal
+	  // **************************************************************************************
+      // **************************************************************************************
+      //                                                                                     **
+	  function scrollResults(divName) 
+	  {
+		 
+           $('html, body').animate({ 
+               scrollTop: $(divName).offset().top
+			  //scrollTop: $('.footer').offset().top
+              //scrollTop: $('.your-class').offset().top
+          }, 'slow'); 
+		  // END Scroll the page to results
+	  }
+	
+	  // **                                                                                  **
+      // **************************************************************************************
+      // **************************************************************************************
+	
+	
+	
+	
+	  function scroll_toTop() 
+	  {
+	      $("html, body").animate({ scrollTop: 0 }, "slow");	
+	  }
+	  // **                                                                                  **
+      // **************************************************************************************
+      // **************************************************************************************
+	   
