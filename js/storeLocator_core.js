@@ -116,7 +116,7 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
    google.maps.event.addListener(map, 'click', function(event) {
       mapZoom = map.getZoom();
       startLocation = event.latLng; //gets current clicked coords
-      globalCoords = startLocation.toString().replace("(", "").replace(")", "");//gets current clicked coords to global var, which we will pass to {'ajax_php/insertSqlMarker_Handler.php'} to add to SQL. Should use {.toString} otherwise it crashes
+      globalCoords = startLocation.toString().replace("(", "").replace(")", "");//gets current clicked coords to global var, which we will pass to {'ajax_php/insertSqlMarker_Handler.php'} to add to SQL. Should use {.toString} otherwise it crashes + removes "()"
 	  //alert(globalCoords);
 	  // show coors in div + button to open modal
 	  // we add {data-toggle='modal' data-target='#myModal'} tp button to open modal with Bootstrap, no additional JS is needed
@@ -247,12 +247,13 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
     //                                                                                     **
 	function showStoreInfo(storeInfo, marker)
 	{
-			
-			resultedText = '<p>Store name: '
+			//creating var that contains name, hours, description, etc, to use in InfoWindow pop-up + $("#info_div")
+			resultedText = '<p>Store name: '       //<img style="width:25px;height:25px;" src="images/marker.png"/>
 			    + storeInfo.name
 			    + '<br>Hours: ' + storeInfo.hours
 			    + '<br>Info: ' + storeInfo.description
-				+ '</p>';
+				+ '</p>'
+				+ '<input type="button" value="delete marker" id=' + storeInfo.id + '>';  // assign id to "Delete" button
 				
 			
 			//my animation
@@ -264,7 +265,7 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 			}
 			
 			
-			//My pop up onClick------
+			//My pop up/InfoWindow onClick------
 			infowindow = new google.maps.InfoWindow({
                  content: resultedText //"Hello World!"
               });
@@ -402,6 +403,11 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
                     markers[i].setMap(null);
                  }
 				//marker.setVisible(false);
+				
+				//Hide your generated marker (if u click any place at map)
+				if (previousMarker){ //if exists a prev click generated marker, Null it 
+                    previousMarker.setMap(null);
+				}
 			} else {
 				$("#btn_Control").stop().fadeOut("fast",function(){ $(this).attr('value', 'Hide markers')}).fadeIn(500);
 				for (var i = 0; i < markers.length; i++) {
@@ -422,7 +428,7 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 	   
 	   
 	   
-	   // click clears Matrix Api div
+	   // click clears/hide Matrix Api div
 	   // **************************************************************************************
        // **************************************************************************************
        //                                                                                     **
@@ -442,7 +448,7 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 	   
 	   
 	   
-	    //generates start/end destinations option_select for usage in Matrix
+	    //generates start/end destinations option_select for usage in Matrix dropdown list
 	   // **************************************************************************************
        // **************************************************************************************
        //                                                                                     **
