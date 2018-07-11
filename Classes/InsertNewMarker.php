@@ -3,7 +3,7 @@
  {
 	 
 	 
-  // adds a new marker to SQL DB, triggered in js/modalWindows_action.js
+  // adds a new marker to SQL DB, triggered in js/addMarkerFromModa.js
   // **************************************************************************************
   // **************************************************************************************
   //                                                                                     **  

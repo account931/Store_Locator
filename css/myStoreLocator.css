@@ -12,6 +12,16 @@
 	   width:50%;
 	   border-radius:20px;
     }
+	
+	/* ---------------------------------------- Mobile */
+    @media screen and (max-width: 480px) { 
+	    #info_div{
+	        width:90%;
+	        border-radius:20px;
+        }
+    }
+	/* ------------------------------------ END Mobile */
+	
 	#info_div p{
 		color:white;
 	}

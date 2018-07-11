@@ -98,8 +98,14 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
   // **************************************************************************************
   //                                                                                     **
   
-  function initMap() {  
-	var myMapCenter = {lat:50.257943 , lng: 28.663423};  
+  function initMap() {
+	  
+    //start init Direction API(draw a the route)  
+    directionsService = new google.maps.DirectionsService(); //should be global to be seen in js/directionApi.js
+    directionsDisplay = new google.maps.DirectionsRenderer();
+	//END  init Direction API(draw a the route) 
+	var myMapCenter = {lat:50.257943 , lng: 28.663423};  //center by default
+
 
 	// Create a map object and specify the DOM element for display.
 	var map = new google.maps.Map(document.getElementById('map'), {
@@ -107,20 +113,23 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 		zoom: 14,
 		
 	});
+	
+	directionsDisplay.setMap(map); //init Direction API	(draw a the route) 
 
-
+  
 	
 	
-   // Click on any place at Google maps to get current coords of clicked place  and put a marker there!!!!!!!!!!!!!!!!!!!!!
+   // Click on any place at Google maps to get current coords of clicked place  and put a marker there  + opens infoWindow with suggestion to add this point to SQL DB, if u confirm a modal window #myModal will pop-up (action for this modal is in (in js/addMarkerFromModa.js) )
    //-------------------------------------------------------------------------------------------
    google.maps.event.addListener(map, 'click', function(event) {
       mapZoom = map.getZoom();
       startLocation = event.latLng; //gets current clicked coords
       globalCoords = startLocation.toString().replace("(", "").replace(")", "");//gets current clicked coords to global var, which we will pass to {'ajax_php/insertSqlMarker_Handler.php'} to add to SQL. Should use {.toString} otherwise it crashes + removes "()"
 	  //alert(globalCoords);
+	  
 	  // show coors in div + button to open modal
 	  // we add {data-toggle='modal' data-target='#myModal'} tp button to open modal with Bootstrap, no additional JS is needed
-	  var text = "<p class='red;'>" + startLocation + "</p><p>Add this point to your markers?</p><input id='btn_add_toMarkres' type='button' name='Button' value='yes' class='btn btn-info' data-toggle='modal' data-target='#myModal'>  <input id='btn_add_cancel' type='button' name='Button' value='No' class='btn btn-danger' >"; 
+	  var text = "<p class='red'>" + startLocation + "</p><p>Add this point to your markers?</p><input id='btn_add_toMarkres' type='button' name='Button' value='yes' class='btn btn-info' data-toggle='modal' data-target='#myModal'>  <input id='btn_add_cancel' type='button' name='Button' value='No' class='btn btn-danger' >"; 
 	  $("#info_div").stop().fadeOut("slow",function(){ $(this).html(text)}).fadeIn(2000);
 	  $("#newMarkerCoords").html( '-> '+ startLocation); // html current coords to modal window with fields()to add a new marker to SQL;
 	  //alert(startLocation ); //alert current clicke coords
@@ -128,25 +137,36 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 	  //showSmallModalWindow(); // shows small modal pop-up with suggestion to add clicked position to SQL markers
 	  
 	   //Scroll to #info_div in Mobile only
-		//if(screen.width <= 640){ 
+	   /*
+		if(screen.width <= 640){ 
 	        scrollResults("#info_div"); //scroll the page down to weather results
-		//}
+		}
+		*/
 	  
-      setTimeout(placeMarker, 400); //adds a new marker to page
+      setTimeout(placeMarker, 400); //adds a new marker to page where u click
    });
 
    
    //----------
     var previousMarker; //must be global to be able to remove a prev clicked marker
   
+   //adds a new marker to page where u click + show infoWindow
     function placeMarker() {
         if (previousMarker){ //if exists a prev click generated marker, Null it 
             previousMarker.setMap(null);
 		}
 		
-        // set a new clicked generated marker		
+        // set to map a new clicked generated marker		
         if(mapZoom == map.getZoom()){		
-            previousMarker = new google.maps.Marker({position: startLocation, map: map, title: 'bbb'});		
+            previousMarker = new google.maps.Marker({position: startLocation, map: map, title: 'bbb'});	
+
+           //adds pop-up infoWindow
+           //My pop up/InfoWindow onClick------
+			 infowindow = new google.maps.InfoWindow({
+                 content: "<p>Add this point to markers?</p>" + startLocation + "<br><input id='btn_add_toMarkres' type='button' name='Button' value='yes' class='btn btn-info' data-toggle='modal' data-target='#myModal'> <input id='btn_add_cancel' type='button' name='Button' value='No' class='btn btn-danger' > "
+              });
+            infowindow.open(map, previousMarker);
+			//	END adds pop-up infoWindow
          }
      }
 	 
@@ -241,7 +261,7 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 	
 	
 	  
-	// show store info in text box OnClick
+	// show marker info (infoWindow) for SQL Markers in pop-up On marker Click
 	// **************************************************************************************
     // **************************************************************************************
     //                                                                                     **
@@ -253,16 +273,21 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 			    + '<br>Hours: ' + storeInfo.hours
 			    + '<br>Info: ' + storeInfo.description
 				+ '</p>'
-				+ '<input type="button" value="delete marker" id=' + storeInfo.id + '>';  // assign id to "Delete" button
+				+ '<input type="button" value="delete marker" class="del-marker" id=' + storeInfo.id + '>';  // assign id to "Delete" button
 				
 			
-			//my animation
+			//my animation-> sets info to #info_div
 			$("#info_div").stop().fadeOut("slow",function(){ $(this).html(resultedText)}).fadeIn(2000);
 			
-			//closes prev infowindow if any
+			//closes prev infowindow if any SQL markers click
 			if (infowindow) {
                 infowindow.close();
 			}
+			
+			//closes infowindow,if it exists for a  click generated infoWindow(NOT from SQL), Null it
+			if (previousMarker){  
+                previousMarker.setMap(null);
+		    }
 			
 			
 			//My pop up/InfoWindow onClick------
@@ -435,6 +460,8 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 	   
 	    $("#btn_CalcRoute_Clear").click(function(){
 			$("#distanceInfo").stop().fadeOut("fast",function(){ $(this).html('') }).fadeIn(2000);
+			// removes Direction API(drawn route)
+			directionsDisplay.setDirections({routes: []});
 	    }); 
 	  
 	  // **                                                                                  **
@@ -448,7 +475,7 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 	   
 	   
 	   
-	    //generates start/end destinations option_select for usage in Matrix dropdown list
+	    //generates start/end destinations <option><select> for usage in Matrix dropdown list
 	   // **************************************************************************************
        // **************************************************************************************
        //                                                                                     **
@@ -508,7 +535,7 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
                        data: { },
                        success: function(data) {
                            // do something;
-					       var finalText = "Distance between " + $("#selectID1 option:selected").html() + " and " + $("#selectID2 option:selected").html() + " is " +  Math.round( data.rows[0].elements[0].distance.value / 1000) + " km. <br>ETA by car is " +  Math.round( data.rows[0].elements[0].duration.value / 60) + " minutes.<br><br>"
+					       var finalText = "Distance between <span class='red'>" + $("#selectID1 option:selected").html() + "</span> and <span class='red'>" + $("#selectID2 option:selected").html() + " </span> is <span class='red'> " +  Math.round( data.rows[0].elements[0].distance.value / 1000) + " km.</span> <br>ETA by car is <span class='red'>" +  Math.round( data.rows[0].elements[0].duration.value / 60) + " minutes</span>.<br><br>"
 					       $("#distanceInfo").stop().fadeOut("fast",function(){ $(this).html(finalText) }).fadeIn(2000);
                            //alert(data.rows[0].elements[0].distance.value);
                        },  //end success
@@ -523,6 +550,7 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 			   }
 			  
 		   //}
+		       runDirectionApi(); //Api part that draws route on map
 		   
 	   }); // end $("#btn_CalcRoute").click
 	   
@@ -538,9 +566,6 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 	   
 	   
 	   
-	   
-	   	
-	  
 	   
 	   
 	   
@@ -652,4 +677,53 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 	  // **                                                                                  **
       // **************************************************************************************
       // **************************************************************************************
+	   
+	   
+	   
+	   
+	   
+	   //Delete a marker from SQL DB
+	   // **************************************************************************************
+       // **************************************************************************************
+       //                                                                                     **
+	   $(document).on("click", '.del-marker', function() {  // this  click  is  used  to   react  to  newly generated;
+	
+	      // var key =  stores.findIndex(obj => obj.id === 2); //finds the index of object in array stores
+		   //alert(key);
+	       if ( confirm("Sure to delete  " +  $(this).attr("id")  + "  ?" )) {
+	   
+		       var idX = this.id; //id of marker  clicked
+		       //alert(idX);
+		       //traceCheckBoxSelection(this.id);
+		   
+		       // AJAX sends data to PHP handler, to delete a marker from SQL DB
+               $.ajax({
+                   url: 'ajax_php/deleteSqlMarker_Handler.php', // handler which runs {Classes/DeleteMarker.php}
+                   type: 'POST',
+			       dataType: 'text', // without this it returned string(that can be alerted), now it returns object
+			       //passing the data
+                   data: { 
+			           markerID: idX,	 //marker id
+				   },
+			       async: false,
+                   success: function(data) {
+                       // do something;
+				       alert(data);
+					   window.location.reload(); //reloads the page to get fresh markers
+                   },  //end success
+			       error: function (error) {
+				       alert('Failed to delete a marker');
+                   }	
+               });                                 
+               // END AJAX sends data to PHP handler, to delete a marker from SQL DB 
+		   
+		   }
+		   
+	   }); //end $(".del-marker").click
+	   	
+	  // **                                                                                  **
+      // **************************************************************************************
+      // **************************************************************************************
+	  // END Delete a marker from SQL DB
+	   
 	   

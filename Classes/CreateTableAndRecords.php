@@ -28,7 +28,7 @@
 
         try{
             if ($conn->query($sql) === TRUE) {
-                echo "Table MyGuests created successfully"; // just for testing, must be commented otherwise ajax request will be screwed
+                echo "Table MyGuests created successfully"; // just for testing, must be commented  otherwise ajax request will be screwed
            } else {
                 echo "Error creating table: " . $conn->error;
            }

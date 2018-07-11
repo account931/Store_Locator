@@ -6,8 +6,8 @@
 	 
 	
 	
-	//Insert a new marker , triggered from ajax request in js/addMarkerFromModa.js
-	InsertNewMarker::addMarker();
+	//Delete a selected  marker 
+	DeleteSingleMarker::removeMarker();
 	
 	
 	

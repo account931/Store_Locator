@@ -9,7 +9,8 @@
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
       <script src="js/storeLocator_core.js"></script><!--  Core Sore locator JS-->  
-	  <script src="js/modalWindows_action.js"></script><!--  runs interaction with modal windows--> 
+	  <script src="js/addMarkerFromModal.js"></script><!--  add a marker, runs interaction with modal windows--> 
+	  <script src="js/directionApi.js"></script><!--  Api part that draws route on map--> 
       <link rel="stylesheet" type="text/css" media="all" href="css/myStoreLocator.css">
 
   </head>
