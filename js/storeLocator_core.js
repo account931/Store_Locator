@@ -102,8 +102,9 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 	  
     //start init Direction API(draw a the route)  
     directionsService = new google.maps.DirectionsService(); //should be global to be seen in js/directionApi.js
-    directionsDisplay = new google.maps.DirectionsRenderer();
+    directionsDisplay = new google.maps.DirectionsRenderer(/*{ polylineOptions: { strokeColor: 'blue' } }*/); //defines the color of route
 	//END  init Direction API(draw a the route) 
+	
 	var myMapCenter = {lat:50.257943 , lng: 28.663423};  //center by default
 
 
@@ -114,7 +115,8 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 		
 	});
 	
-	directionsDisplay.setMap(map); //init Direction API	(draw a the route) 
+	//init Direction API	(draw a the route)
+	directionsDisplay.setMap(map);  
 
   
 	
@@ -699,8 +701,8 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
        //                                                                                     **
 	   $(document).on("click", '.del-marker', function() {  // this  click  is  used  to   react  to  newly generated;
 	
-	      // var key =  stores.findIndex(obj => obj.id === 2); //finds the index of object in array stores
-		   //alert(key);
+	       var key = $.grep(stores, function(obj){return obj.id == 3;})[0]; //finds the index of object in array {stores} by key's value
+		   alert(key);
 	       if ( confirm("Sure to delete  " +  $(this).attr("id")  + "  ?" )) {
 	   
 		       var idX = this.id; //id of marker  clicked

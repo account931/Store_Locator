@@ -1,4 +1,10 @@
 //Api part that draws route on map
+//Should be init in js/storeLocator_core.js in {function initMap()} with folowing 3 items:
+    //1.directionsService = new google.maps.DirectionsService(); //should be global to be seen in js/directionApi.js
+    //2.directionsDisplay = new google.maps.DirectionsRenderer();
+	//3.directionsDisplay.setMap(map);
+	
+	
 
      // function draws a route, triggered in js/storeLocator_core.js on button click "Calc the route"
     // **************************************************************************************
