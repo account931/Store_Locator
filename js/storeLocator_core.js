@@ -20,6 +20,9 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 		
 		function runSQLRequestToGetMarkers(){
 		
+		stores.length = 0;
+		markers.length = 0; //must have, it deletes prev array, otherwise it adds to markers[] more and more same markers and creates repetable list in <option><select> + in Instructions
+		
 		// AJAX sends data to PHP handler, which selects markers from SQL DB  ************ 
         $.ajax({
             url: 'ajax_php/getSqlMarkers.php',
@@ -75,6 +78,7 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 
 
 
+    
 
 
 
@@ -86,11 +90,8 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 
 
 
+   var myMapCenter = {lat:50.257943 , lng: 28.663423};  //center by default, declare this var global & moved it outside initMap() to be able to assign it the new value after delete/insert, when we refresh map and force it to center at the coords of last deleted/inserted place
 
-
-
-
-		
 		
 		
   //core function to show GMaps, trigered in //script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async defer
@@ -98,14 +99,15 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
   // **************************************************************************************
   //                                                                                     **
   
-  function initMap() {
+  function initMap() { 
+    //alert("init" + JSON.stringify(myMapCenter, null, 4));  
 	  
     //start init Direction API(draw a the route)  
     directionsService = new google.maps.DirectionsService(); //should be global to be seen in js/directionApi.js
     directionsDisplay = new google.maps.DirectionsRenderer(/*{ polylineOptions: { strokeColor: 'blue' } }*/); //defines the color of route
 	//END  init Direction API(draw a the route) 
 	
-	var myMapCenter = {lat:50.257943 , lng: 28.663423};  //center by default
+	//var myMapCenter = {lat:50.257943 , lng: 28.663423};  //center by default, moved it out of initMap() to be able to assign it the new value after delete/insert, when we refresh map and force it to center at the coords of last deleted/inserted place
 
 
 	// Create a map object and specify the DOM element for display.
@@ -388,7 +390,7 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 	
 	
 	
-	
+	// ADDS SQL markers to map
 	// runs every Stores array Object through function markStore
 	// **************************************************************************************
     // **************************************************************************************
@@ -700,12 +702,16 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
        // **************************************************************************************
        //                                                                                     **
 	   $(document).on("click", '.del-marker', function() {  // this  click  is  used  to   react  to  newly generated;
-	
-	       var key = $.grep(stores, function(obj){return obj.id == 3;})[0]; //finds the index of object in array {stores} by key's value
-		   alert(key);
-	       if ( confirm("Sure to delete  " +  $(this).attr("id")  + "  ?" )) {
 	   
-		       var idX = this.id; //id of marker  clicked
+	   var idX = this.id; //id of marker  clicked
+	
+	       // we have the id of object as we assign this id to "Delete" button ID, now we get the name by finding object in {stores} which contains that id
+	       var key = $.grep(stores, function(obj){return obj.id == idX})[0]; //finds the index of object in array {stores} by key's value-> it return ONE  whole found object {name:, location:}
+		   //alert(JSON.stringify(key, null, 4));
+           //alert(key.location.lat);		   
+	       if ( confirm("Sure to delete  " +  /* $(this).attr("id")*/ key.name  + "  ?" )) {
+	   
+		       
 		       //alert(idX);
 		       //traceCheckBoxSelection(this.id);
 		   
@@ -717,12 +723,18 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 			       //passing the data
                    data: { 
 			           markerID: idX,	 //marker id
+					   markername: key.name //pass the marker name, we need it just to echo it name in DeleteSingleMarker.php
 				   },
 			       async: false,
                    success: function(data) {
                        // do something;
 				       alert(data);
-					   window.location.reload(); //reloads the page to get fresh markers
+					   runSQLRequestToGetMarkers(); // gets refreshed SQL Markers
+					   myMapCenter = {lat:key.location.lat , lng: key.location.lng};  //get the coord of deleted marker to center map back here after deletion and refresh
+					  //alert("ajax" + JSON.stringify(myMapCenter, null, 4)); 
+					   initMap(); //reloads the map
+					   
+					   //window.location.reload(); //reloads the page to get fresh markers
                    },  //end success
 			       error: function (error) {
 				       alert('Failed to delete a marker');
@@ -739,4 +751,11 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
       // **************************************************************************************
 	  // END Delete a marker from SQL DB
 	   
+	   
+	   
+	   
+	   
+	   
+
+	
 	   

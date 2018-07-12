@@ -14,8 +14,9 @@
 	    global $conn;
 	
 	    //echo "Check</br>";
-	    echo $_POST['markerID']; 
+	    //echo $_POST['markerID']; 
 		$idM = $_POST['markerID'];
+		echo $_POST['markername']; //echo marker name to alert  back in ajax if succesfull
 		
         try {
             // sql to delete a record
@@ -23,7 +24,7 @@
 
             // use exec() because no results are returned
             $conn->exec($sql);
-            echo " Record deleted successfully";
+            echo " marker deleted successfully";
         }
         catch(PDOException $e)
         {

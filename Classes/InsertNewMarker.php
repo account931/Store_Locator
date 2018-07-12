@@ -13,15 +13,15 @@
 	    global $conn;
 	
 	    //echo "Check</br>";
-	    echo $_POST['markerName'];  
-	    echo "<br>";
+	    echo $_POST['markerName'] . " -> ";  
+	    //echo "<br>";
 	    echo $_POST['markerCoords'] . " -> ";    
-	    echo $_POST['markerInfo'] . " -> ";  
-	    echo $_POST['markerDescription'] . " -> ";  
+	    //echo $_POST['markerInfo'] . " -> ";  
+	    //echo $_POST['markerDescription'] . " -> ";  
 		
 		// parse $_POST['markerCoords'], which contains lat, lng to $lat and $lng;
 		$cords = explode(",", $_POST['markerCoords']); //split coords in array[alt, lng]
-		echo "split " .$cords[0];
+		//echo "split " .$cords[0];
 		$l = $cords[0] * 1.0;
 		$l2 = $cords[1] * 1.0;
 
@@ -38,7 +38,7 @@
 			
             // insert a row			
             $stmt->execute();
-            echo "New records created successfully";
+            echo "New marker created successfully";
         } 
 	    catch(PDOException $e) {
             echo "Error!!!: " . $e->getMessage();

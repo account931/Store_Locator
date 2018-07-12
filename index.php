@@ -12,6 +12,9 @@
 	  <script src="js/addMarkerFromModal.js"></script><!--  add a marker, runs interaction with modal windows--> 
 	  <script src="js/directionApi.js"></script><!--  Api part that draws route on map--> 
       <link rel="stylesheet" type="text/css" media="all" href="css/myStoreLocator.css">
+	  
+	    <!--Favicon-->
+      <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
 
   </head>
   <body>
@@ -109,7 +112,7 @@
         <p>Provide info for marker <span id="newMarkerCoords"></span></p>
 		
 		<label for="usr">Marker Name:</label>
-        <input type="text" class="form-control" id="formMarkerName">
+        <input type="text" class="form-control" id="formMarkerName" required>
 		<label for="usr">Marker Info:</label>
         <input type="text" class="form-control" id="formMarkerInfo">
 		<label for="usr">Marker Description:</label>

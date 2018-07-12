@@ -1,11 +1,10 @@
 //runs interaction with modal windows
 // Google maps are displayed with { <script src="https://maps.googleapis.com/maps/api/js?callback=initMap" async defer></script> } in index.html.
 
-
-	
+       
     $(document).ready(function(){
 			
-	
+	  
 	
 	
 	
@@ -17,6 +16,11 @@
 	   
         $(document).on("click", '#agreedAddToSQL', function() {  // this  click  is  used  to   react  to  newly generated;
 			
+			//be sure name is not missed
+			if ($('#formMarkerName').val()==""){
+				alert("Please, fill in the name");
+				return false;
+			}
 			
 			// AJAX sends data to PHP handler, which insert a new marker to SQL DB
             $.ajax({
@@ -26,21 +30,19 @@
 			    //passing the data
                 data: { 
 			        markerName: $('#formMarkerName').val(),	 //marker name
-					markerCoords: globalCoords, //coordinates, get them from global {globalCoords} defined in storeLocator_core.js in {google.maps.event.addListener(map, 'click', function(event) {}
+					markerCoords: globalCoords, //coordinates in format {lat, lng}, get them from global {globalCoords} defined in storeLocator_core.js in {google.maps.event.addListener(map, 'click', function(event) {}
 			        markerInfo: $('#formMarkerInfo').val(), //marker info
 					markerDescription: $('#formMarkerDescription').val(),
 				},
 			    async: false,
                 success: function(data) {
                     // do something;
-				    alert(data);
-					 window.location.reload(); //reloads the page to get fresh markers
-					//runSQLRequestToGetMarkers(); //Run SQL request to get updated markers to object {stores}
-					//put markers on map according to object {stores}
-					//alert(JSON.stringify(stores, null, 4));
-					/*stores.forEach(function(store){
-		                markStore(store);
-	                }); */
+				    alert(data); //alerts echoes from  ajax_php/insertSqlMarker_Handler.php
+					 //window.location.reload(); //reloads the page to get fresh markers
+					 runSQLRequestToGetMarkers(); // gets refreshed SQL Markers
+					 myMapCenter = {lat: parseFloat(globalCoords.split(',')[0]) , lng: parseFloat(globalCoords.split(',')[1])};  //get the coord of inserted marker to center map back here after insert and refresh, as {globalCoords} received as string {lat, lng}, we split it to array, parseFloat() here is a must as it crashes
+					 //alert("ajax insert" + JSON.stringify(myMapCenter, null, 4)); 
+					 initMap(); //reloads the map
 				            
                 },  //end success
 			    error: function (error) {
@@ -87,9 +89,7 @@
 	   
 	
       
-	  
-	  
-	  
+	 
 	
 
 
