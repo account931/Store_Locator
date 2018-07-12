@@ -33,14 +33,22 @@
     <!-- Controls: show/hide markers, from/to dropdowns--> 
     <div id="controls" class="row no-gutter"> <!-- CLASS no-gutter that fixes spaces between cols-->
 	
-	    <div class="col-md-2 col-xs-12  style="">
+	    <!--Hide or Show markers-->
+	    <div class="col-md-2 col-xs-6  style="">
             <input id="btn_Control" type="button" name="Button2" value="Hide markers" class="btn" />
 	    </div>
 	    
+		<!--Instruct-->
+		<div class="col-md-1 col-xs-6  style="">
+            <input id="btn_instruct" type="button" name="Button2" value="Instruct" class="btn" data-toggle='modal' data-target='#myModalInstructions' />
+	    </div>
+		 
+		<!-- <select><option>-->
 		<div class="col-md-3 col-xs-6 ">
             <span id="destination" ></span>
 		</div>
 		
+		<!-- <select><option>-->
 		<div class="col-md-3 col-xs-6 dest2">	
             <span id="destination2" ></span>
 		</div>
@@ -86,7 +94,7 @@
   
   
   
-  <!-- START Modal with fields to add a new marker(hidden by default) -->
+  <!-- START Bootstrap Modal with fields to add a new marker(hidden by default) -->
   <!--we add {data-toggle='modal' data-target='#myModal'} to button (in JS) which triggers  to open modal with Bootstrap, no additional JS is needed-->
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -124,10 +132,44 @@
  
  
  
-  <!-- START Smqll Modal with suggestion to add to add a new marker -->
+ 
+    <!-- START Bootstrap Modal with Instructions(hidden by default) -->
   <!--we add {data-toggle='modal' data-target='#myModal'} to button (in JS) which triggers  to open modal with Bootstrap, no additional JS is needed-->
+<div id="myModalInstructions" class="modal fade" role="dialog">
+  <div class="modal-dialog">
 
- <!-- END Modal with fields to add a new marker -->
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title red">How to use API</h4>
+      </div>
+      <div class="modal-body ">
+	      <div class="radius-red"><!-- start block1-->
+              <p>Please know, you can use Google Maps API asserts with your markers stored in SQL DataBase at this page</p>
+	          <p>You can add your personal markers to SQL DB, delete them, draw the route between two markers and calculate ETA and distance</p>
+	  
+	          <p>1. To add your personal marker, please click any place at map and select an option to add a marker</p>
+	          <p>1. To delete your personal marker, please click the marker and select an option to delete a marker </p>
+	          <p>3. To calcuate ETA and distance between two personal markers and draw a route, please select start and stop destination and click "Calc the route" </p>
+	          <p>4. To hide a drawn route and distance info, please click "Clear" </p>
+	          <br></hr class="red">
+	      </div><!-- end block1-->
+	   
+	      <br>
+	      <h4 class="red">Your current markers</h4>
+	      <p id="listOfMarkers" class="radius-red"></p><!-- will hold js generated list-->
+  
+      </div>
+      <div class="modal-footer">
+	    <button type="button" class="btn btn-default" data-dismiss="modal" id="">OK</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+ <!-- START Bootstrap Modal with Instructions(hidden by default) -->
  
  
  

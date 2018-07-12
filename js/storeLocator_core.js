@@ -9,14 +9,14 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 
 
 
-   // START SQL VARIANT, temp disabled, to activate uncomment {runSQLRequestToGetMarkers();}
-   // Start getting object {stores} from SQL, this SQL functioanlity is temp disabled, but 100% working, it u'd like to use this SQL Markers version, please decomment this block + deploy SQL table to server(schema is in Classes....) + comment built-in JS object {stores}
+   // START SQL VARIANT-gets SQL Markers
+   // Start getting Markers {stores} from SQL, this SQL functioanlity is temp disabled, but 100% working, it u'd like to use this SQL Markers version, please decomment this block + deploy SQL table to server(schema is in Classes....) + comment built-in JS object {stores}
    // sends ajax to php which SELECT all markers from Markers DB and echo them in JSON
    // **************************************************************************************
    // **************************************************************************************
    //                                                                                     **
    
-	    var stores = [];  // object that will be used instead of commented build-in object
+	    var stores = [];  // array that will be used instead of commented build-in object
 		
 		function runSQLRequestToGetMarkers(){
 		
@@ -48,7 +48,7 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 					element.hours = data[i].hours;
 					element.description = data[i].description;
 					element.id = data[i].id;
-		            stores.push(element);
+		            stores.push(element);//adds objects to array
 					
 				}
 				//alert ("Loc St exists" + JSON.stringify(stores, null, 4) );
@@ -65,7 +65,7 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 	   // **                                                                                  **
        // **************************************************************************************
        // **************************************************************************************
-       // END  getting object {stores} from SQL,
+       // END  getting object Markers {stores} from SQL,
 
        runSQLRequestToGetMarkers(); //Run SQL request to get markers // disable it if using built-in JS object
 
@@ -152,6 +152,11 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
   
    //adds a new marker to page where u click + show infoWindow
     function placeMarker() {
+		//closes any prev infowindow if any SQL markers was clicked
+		if (infowindow) {
+            infowindow.close();
+		}
+			
         if (previousMarker){ //if exists a prev click generated marker, Null it 
             previousMarker.setMap(null);
 		}
@@ -170,11 +175,8 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
          }
      }
 	 
-	 
-	 //---------
-	 function showSmallModalWindow() {
-		 
-	 }
+
+	
 	// End Click on any place at Google maps to get clicked coords and put a marker there!!!!!!!!!!!!!!!!!!!!!
     //-------------------------------------------------------------------------------------------
 	
@@ -187,7 +189,7 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 	//var marker;
 	
 	
-	 // function to assign every single marker with relevat coords position and title from {var stores}
+	 // function to assign every single marker (received from SQL) with relevant coords position and title from {var stores}
 	 // **************************************************************************************
      // **************************************************************************************
      //                                                                                     **
@@ -223,7 +225,7 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 		
 		
 		
-		// show store info when marker is clicked
+		// show SQL store/markers info (infoWindow), when marker is clicked
 		// ****************************
         // ****************************
         //                           **
@@ -240,7 +242,7 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 	    // **                       **
         // ***************************
         // ***************************
-		// END // show store info when marker is clicked
+		// show store/marker info (infoWindow), when marker is clicked
 		
 		
 
@@ -261,7 +263,7 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 	
 	
 	  
-	// show marker info (infoWindow) for SQL Markers in pop-up On marker Click
+	// function to show marker info (infoWindow) for SQL Markers in pop-up On marker Click
 	// **************************************************************************************
     // **************************************************************************************
     //                                                                                     **
@@ -279,7 +281,7 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 			//my animation-> sets info to #info_div
 			$("#info_div").stop().fadeOut("slow",function(){ $(this).html(resultedText)}).fadeIn(2000);
 			
-			//closes prev infowindow if any SQL markers click
+			//closes prev infowindow if any SQL markers was clicked
 			if (infowindow) {
                 infowindow.close();
 			}
@@ -318,7 +320,7 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 	
 	
 	// INFO DATA, 
-	//this object was renamed to {storesPREV} as now it is not used. Now var stores[] is derived from SQL with JS {runSQLRequestToGetMarkers()}.
+	//this array of objects was renamed to {storesPREV} as now it is not used. Now var stores[] is derived from SQL with JS {runSQLRequestToGetMarkers()}.
 	/*
 	var storesPREV = [
 		{
@@ -385,7 +387,7 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 	
 	
 	
-	// runs every Stores Object through function markStore
+	// runs every Stores array Object through function markStore
 	// **************************************************************************************
     // **************************************************************************************
     //                                                                                     **
@@ -483,15 +485,21 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 	   function generateSelect(selectText, i, spanID){ //("start/end text", 1 or to to add to id="selectID", span to html() )
 	       var destination = "<select id='selectID" + i + "'>";
 	       destination += "<option value='' selected='selected'>" + selectText + "</option>";
+		   myList = ""; //list for instruction modal
 	       for ( i = 0; i < markers.length; i++ ){
 		       //alert(markers[i].position);
 		       destination = destination + "<option value='" + markers[i].position + "'>" + markers[i].title + "</option>"; 
+			   
+			   //markers list for Instruction modal window
+			   myList = myList + "<p>" + (i + 1) + "." + markers[i].title + "</p>";
 	        } 
 	   
 	        destination = destination + "</select>";
 	        $("#" + spanID).html(destination);
 	        //$("#destination2").html(destination);
 	        //end generates option_select
+			
+			$("#listOfMarkers").html(myList); //html marker list to instruction modal
 	   }
 	  // **                                                                                  **
       // **************************************************************************************
@@ -499,7 +507,7 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 
 	
 	
-	   //generates start/end destinations option_select for usage in Matrix
+	   //Invoke function to generate start/end destinations <option><select> for usage in Matrix
 	   generateSelect('Start point', 1, 'destination' ); // generates start point dropdown
 	   generateSelect('End point', 2, 'destination2' );  // generates end point dropdown
 	   
@@ -517,7 +525,7 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 		   } else {
 			   if ( $("#selectID1").val() == $("#selectID2").val()){ // if start/stop are not the same
 			       alert("Start and stop points are the same. change one of them");
-			   } else { 
+			   } else { //if all is OK 
 			       //else form the request to AJAX Google Maps Distance Maxrix API
 			       //we use here Proxy {https://cors-anywhere.herokuapp.com}, as direct addressing GM Matrix API causes {No 'Access-Control-Allow-Origin'} ERROR
 				   //var URL = "https://cors-anywhere.herokuapp.com/https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=50.258004,28.659492&destinations=50.247574,28.665838";
@@ -544,13 +552,16 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 				       //$("#weatherResult").stop().fadeOut("slow",function(){ $(this).html("<h4 style='color:red;padding:3em;'>ERROR!!! <br> NO CITY FOUND</h4>")}).fadeIn(2000);
                        }	
                    });   //  END AJAXed  part 
+				   
+				   runDirectionApi(); //run Direction Api part that draws route on map, located in js/DirectionApi
+				   
 	           } //end else 2
                                                
      
 			   }
 			  
 		   //}
-		       runDirectionApi(); //Api part that draws route on map
+		       
 		   
 	   }); // end $("#btn_CalcRoute").click
 	   
@@ -648,7 +659,7 @@ var globalCoords;  //coords of current clicked, which we will pass to {'ajax_php
 
 
 
-// Scroll the page to results  #resultFinal
+// Scroll the page to results  #resultFinal, NOT USED??
 	  // **************************************************************************************
       // **************************************************************************************
       //                                                                                     **
